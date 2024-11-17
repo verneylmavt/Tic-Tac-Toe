@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Tic-Tac-Toe Enhanced</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>Tic-Tac-Toe Online</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Tic-Tac-Toe</h1>
-    <div class="menu" id="menu">
-        <button id="singlePlayerButton">Single Player</button>
-        <button id="twoPlayerButton">Two Players</button>
-    </div>
-    <div class="game hide" id="gameBoard">
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-        <div class="cell" data-cell></div>
-    </div>
-    <div class="winning-message hide" id="winningMessage">
-        <div data-winning-message-text></div>
-        <button id="restartButton">Restart</button>
-    </div>
-    <audio id="moveSound" src="move.mp3"></audio>
-    <audio id="winSound" src="win.mp3"></audio>
-    <audio id="drawSound" src="draw.mp3"></audio>
-    <script src="script.js"></script>
+  <h1>Tic-Tac-Toe Online</h1>
+  <div class="menu" id="menu">
+    <button id="createGameButton">Create Game</button>
+    <input type="text" id="gameCodeInput" placeholder="Enter Game Code">
+    <button id="joinGameButton">Join Game</button>
+  </div>
+  <div class="game hide" id="gameBoard">
+    <div class="cell" data-cell data-index="0"></div>
+    <div class="cell" data-cell data-index="1"></div>
+    <div class="cell" data-cell data-index="2"></div>
+    <div class="cell" data-cell data-index="3"></div>
+    <div class="cell" data-cell data-index="4"></div>
+    <div class="cell" data-cell data-index="5"></div>
+    <div class="cell" data-cell data-index="6"></div>
+    <div class="cell" data-cell data-index="7"></div>
+    <div class="cell" data-cell data-index="8"></div>
+  </div>
+  <div class="winning-message hide" id="winningMessage">
+    <div data-winning-message-text></div>
+    <button id="restartButton">Back to Menu</button>
+  </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
