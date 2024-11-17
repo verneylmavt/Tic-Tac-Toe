@@ -4,7 +4,16 @@ const cellElements = document.querySelectorAll('[data-cell]');
 const winningMessageTextElement = document.querySelector('[data-winning-message-text]');
 const winningMessageElement = document.getElementById('winningMessage');
 const restartButton = document.getElementById('restartButton');
+const singlePlayerButton = document.getElementById('singlePlayerButton');
+const twoPlayerButton = document.getElementById('twoPlayerButton');
+const menu = document.getElementById('menu');
+const gameBoard = document.getElementById('gameBoard');
+const moveSound = document.getElementById('moveSound');
+const winSound = document.getElementById('winSound');
+const drawSound = document.getElementById('drawSound');
+
 let oTurn;
+let aiPlayer = false;
 
 const WINNING_COMBINATIONS = [
   [0, 1, 2], // Rows
@@ -17,9 +26,22 @@ const WINNING_COMBINATIONS = [
   [2, 4, 6]
 ];
 
-startGame();
+// Event Listeners
+singlePlayerButton.addEventListener('click', () => {
+  aiPlayer = true;
+  startGame();
+});
 
-restartButton.addEventListener('click', startGame);
+twoPlayerButton.addEventListener('click', () => {
+  aiPlayer = false;
+  startGame();
+});
+
+restartButton.addEventListener('click', () => {
+  menu.classList.remove('hide');
+  gameBoard.classList.add('hide');
+  winningMessageElement.classList.add('hide');
+});
 
 function startGame() {
   oTurn = false;
@@ -29,19 +51,27 @@ function startGame() {
     cell.removeEventListener('click', handleClick);
     cell.addEventListener('click', handleClick, { once: true });
   });
-  winningMessageElement.classList.remove('show');
+  winningMessageElement.classList.add('hide');
+  menu.classList.add('hide');
+  gameBoard.classList.remove('hide');
 }
 
 function handleClick(e) {
   const cell = e.target;
   const currentClass = oTurn ? O_CLASS : X_CLASS;
   placeMark(cell, currentClass);
+  moveSound.play();
   if (checkWin(currentClass)) {
     endGame(false);
+    winSound.play();
   } else if (isDraw()) {
     endGame(true);
+    drawSound.play();
   } else {
     swapTurns();
+    if (aiPlayer && !oTurn) {
+      setTimeout(aiMove, 500);
+    }
   }
 }
 
@@ -51,7 +81,8 @@ function endGame(draw) {
   } else {
     winningMessageTextElement.innerText = `${oTurn ? "O's" : "X's"} Wins!`;
   }
-  winningMessageElement.classList.add('show');
+  winningMessageElement.classList.remove('hide');
+  gameBoard.classList.add('hide');
 }
 
 function isDraw() {
@@ -66,6 +97,25 @@ function placeMark(cell, currentClass) {
 
 function swapTurns() {
   oTurn = !oTurn;
+}
+
+function aiMove() {
+  const availableCells = [...cellElements].filter(cell => {
+    return !cell.classList.contains(X_CLASS) && !cell.classList.contains(O_CLASS);
+  });
+  const randomIndex = Math.floor(Math.random() * availableCells.length);
+  const cell = availableCells[randomIndex];
+  placeMark(cell, O_CLASS);
+  moveSound.play();
+  if (checkWin(O_CLASS)) {
+    endGame(false);
+    winSound.play();
+  } else if (isDraw()) {
+    endGame(true);
+    drawSound.play();
+  } else {
+    swapTurns();
+  }
 }
 
 function checkWin(currentClass) {
